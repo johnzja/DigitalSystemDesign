@@ -7,13 +7,14 @@ from tensorflow import keras
 # Helper libraries
 import numpy as np
 import matplotlib.pyplot as plt
-
+from LoadFiles import load_files
 print(tf.__version__)
 
 # === Import the Fashion MNIST dataset ===
 
-fashion_mnist = keras.datasets.fashion_mnist
-(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
+
+train_images, train_labels, test_images, test_labels = load_files()
+
 class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
                'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
@@ -21,12 +22,20 @@ class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
 class LossHistory(keras.callbacks.Callback):
     def on_train_begin(self, logs={}):
         self.losses = {'batch':[], 'epoch':[]}
+        self.acc = {'batch':[], 'epoch':[]}
+        self.val_losses = {'batch': [], 'epoch': []}
+        self.val_acc = {'batch': [], 'epoch': []}
 
     def on_batch_end(self, batch, logs={}):
         self.losses['batch'].append(logs.get('loss'))
+        self.acc['batch'].append(logs.get('accuracy'))
 
     def on_epoch_end(self, batch, logs={}):
         self.losses['epoch'].append(logs.get('loss'))
+        self.acc['epoch'].append(logs.get('accuracy'))
+        self.val_losses['epoch'].append(logs.get('val_loss'))
+        self.val_acc['epoch'].append(logs.get('val_accuracy'))
+
 
     def loss_plot(self, loss_type, curve_color, curve_label):
         iters = range(len(self.losses[loss_type]))
@@ -35,6 +44,7 @@ class LossHistory(keras.callbacks.Callback):
         plt.xlabel(loss_type)
         plt.ylabel('loss')
         plt.legend(loc="upper right")
+
 
 def train_and_plot(model_struc, x_train, y_train, x_test, y_test, optimer, curve_color, curve_label):
     # Compile the model
