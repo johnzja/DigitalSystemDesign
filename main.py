@@ -100,3 +100,4 @@ plt.show()
 
 # save model
 model.save('mod1.h5')
+# fuck!!
