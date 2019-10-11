@@ -6,6 +6,6 @@ from tensorflow import keras
 
 # Helper libraries
 import numpy as np
-from keras.models import load_model
 
-model = load_model('mod1.h5')
+model = keras.models.load_model('mod1.h5')
+model.summary()
