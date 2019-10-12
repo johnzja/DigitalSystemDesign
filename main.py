@@ -8,14 +8,22 @@ from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 print(tf.__version__)
 
-# Import the Fashion MNIST dataset
-fashion_mnist = keras.datasets.fashion_mnist
-(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
-class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
-               'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
+
+# display data.
+def load_files():
+    data = np.load('train_files.npz')
+    train_images = data['tri']
+    train_labels = data['trl']
+    data = np.load('test_files.npz')
+    test_images = data['tei']
+    test_labels = data['tel']
+    return train_images, train_labels, test_images, test_labels
+
+
+train_images, train_labels, test_images, test_labels = load_files()
+
 
 # Write a class named LossHistory to save loss and acc
 class LossHistory(keras.callbacks.Callback):
