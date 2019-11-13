@@ -3,6 +3,7 @@
 //==========================================================================
 // @brief: A k-nearest-neighbor implementation for digit recognition (k=3)
 
+#include "pch.h"
 #include "digitrec.h"
 
 //----------------------------------------------------------
@@ -27,6 +28,10 @@ int digitrec(int64_t input)
 	for (int i = 0; i < TRAINING_SIZE; i++) {
 		for (int j = 0; j < 10; j++) {
 			// Read a new instance from the training set
+			if (i == 3 && j == 2)
+			{
+				int a = 0;
+			}
 			int64_t training_instance = training_data[j][i];
 			// Update the KNN set
 			update_knn(input, training_instance, knn_set[j]);
@@ -76,10 +81,12 @@ void update_knn(int64_t test_inst, int64_t train_inst, int min_distances[K_CONST
 	{
 		min_distances[i] = min_distances[i - 1];
 	}
-	min_distances[loc] = dist;
+	if (loc < K_CONST)
+	{
+		min_distances[loc] = dist;
+	}
 
 	// -----------------------------
-
 }
 
 
@@ -127,12 +134,11 @@ int knn_vote(int knn_set[10][K_CONST])
 	{
 		if (mindis_num[i] > res)
 		{
-			res=mindis_num[i];
+			res = mindis_num[i];
 			winner = i;
 		}
 	}
-	return res;
+	return winner;
 
 	// -----------------------------
 }
-
