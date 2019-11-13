@@ -16,19 +16,19 @@ accept_cnt = 0;
 % Markov move. Global-jump.
 % evaluate Global Jump probabilities.
 % qj(x) is proportional to exp(-u(x)/T).
-N = 1000000;
-thres = round(N/40);
+N = 40000000;
+% thres = round(N/40);
 
 % Record each transition step.
 zeta_arr = zeros(N, m);
 EL_arr = zeros(N, 2);
 E_X = GetEnergy(X);
 mean_T_inv = T_inv - mean(T_inv);
-h = waitbar(0, 'Performing MCMC Transition...');
+% h = waitbar(0, 'Performing MCMC Transition...');
 for t = 1:N
-    if mod(N, thres) == 0
-        waitbar(t/N);
-    end
+%     if mod(N, thres) == 0
+%         waitbar(t/N);
+%     end
     for var = 1:m
         p_L_arr(var) = pi_arr(var)/exp(zeta(var))*exp(-E_X*mean_T_inv(var));
     end
@@ -36,7 +36,7 @@ for t = 1:N
     p_L_arr1 = p_L_arr / sum(p_L_arr);
     L = sample_from_prob_arr(p_L_arr1);          % Now the label is determined.
 
-    for iter = 1:40
+%     for iter = 1:400
         coord = randi(szk,[1,2]);               % randomly pick a spin.
         target_level = randi(q);
         [AccProb, Energy_Change] = GetAcceptProb_Once(X, coord, target_level, T_inv(L), szk);
@@ -48,7 +48,7 @@ for t = 1:N
             E_X = E_X + Energy_Change;
             accept_cnt = accept_cnt + 1;
         end
-    end
+%     end
     % Update free energies: zeta.
     zeta_subt = zeta;
     zeta_subt(L) = zeta_subt(L) + burn_in(beta, t0, t, pi_arr, L)/pi_arr(L);
@@ -62,7 +62,7 @@ for t = 1:N
     EL_arr(t, 1) = E_X;
     EL_arr(t, 2) = L;
 end
-close(h);
+% close(h);
 % Separate m MARKOV chains.
 Sample_indices = -ones(N, m);               % initialize as -1's.
 counter = ones(m,1);

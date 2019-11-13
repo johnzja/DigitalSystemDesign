@@ -64,24 +64,20 @@ void update_knn(int64_t test_inst, int64_t train_inst, int min_distances[K_CONST
 	// -----------------------------
 	// YOUR CODE GOES HERE
 
-	for (int i = 0;i < 3;i++)
+	int loc;
+	for (loc = 0;loc < K_CONST;loc++)
 	{
-		if (dist < min_distances[i])
+		if (dist < min_distances[loc])
 		{
-			switch(i)
-			{
-			case 0:
-				min_distances[2] = min_distances[1];
-				min_distances[1] = min_distances[0];
-				min_distances[0] = dist;
-			case 1:
-				min_distances[2] = min_distances[1];
-				min_distances[1] = dist;
-			case 2:
-				min_distances[2] = dist;
-			}
+			break;
 		}
 	}
+	for (int i = K_CONST - 1;i > loc;i--)
+	{
+		min_distances[i] = min_distances[i - 1];
+	}
+	min_distances[loc] = dist;
+
 	// -----------------------------
 
 }
@@ -106,13 +102,12 @@ int knn_vote(int knn_set[10][K_CONST])
 
 	int mindis;
 	int mindis_class;
-	int total_mindis_class;
 	int mindis_num[10];
 	for (int i = 0;i < 10;i++)
 	{
 		mindis_num[i] = 0;
 	}
-	for (int n = 0;n < 3;n++)
+	for (int n = 0;n < K_CONST;n++)
 	{
 		mindis = 50;
 		mindis_class = 0;
@@ -125,22 +120,19 @@ int knn_vote(int knn_set[10][K_CONST])
 			}
 		}
 		mindis_num[mindis_class]++;
-		if (n == 0)
+	}
+	int res = 0;
+	int winner;
+	for (int i = 0;i < 10;i++)
+	{
+		if (mindis_num[i] > res)
 		{
-			total_mindis_class = mindis_class;
+			res=mindis_num[i];
+			winner = i;
 		}
 	}
-	int res;
-	for (res = 0;res < 10;res++)
-	{
-		if (mindis_num[res] > 1)
-			break;
-	}
-	if (res > 9)
-	{
-		res = total_mindis_class;
-	}
 	return res;
+
 	// -----------------------------
 }
 
