@@ -7,7 +7,6 @@
 #ifndef TESTING_DATA_H
 #define TESTING_DATA_H
 
-#include "pch.h"
 #include "typedefs.h"
 
 #define TESTING_SIZE 180

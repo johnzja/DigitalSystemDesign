@@ -1,7 +1,6 @@
-#include "pch.h"
 #include "cnn.h"
 
-// ¾í»ýÉñ¾­ÍøÂçÊ¶±ðº¯Êý
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½
 int cnn(int64_t input_data)
 {
 	float in_c1[49];
@@ -11,23 +10,23 @@ int cnn(int64_t input_data)
 		input_data >>= 1;
 	}
 
-	// µÚÒ»²ã¾í»ý²ã
+	// ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	float out_c1[32][25];
 	for (int i = 0;i < 32;i++)
 	{
 		float knl[9];
 		for (int k = 0;k < 9;k++)
 			knl[k] = w_conv1[i * 9 + k];
-		conv(in_c1, out_c1[i], knl, 7, 5, 3);	// ¾í»ý
+		conv(in_c1, out_c1[i], knl, 7, 5, 3);	// ï¿½ï¿½ï¿½ï¿½
 		for (int h = 0;h < 25;h++)
 		{
-			out_c1[i][h] += b_conv1[i];			// ¼ÓÉÏÆ«ÖÃ
+			out_c1[i][h] += b_conv1[i];			// ï¿½ï¿½ï¿½ï¿½Æ«ï¿½ï¿½
 			if (out_c1[i][h] < 0)
 				out_c1[i][h] = 0.0;				// ReLU
 		}
 	}
 
-	// µÚ¶þ²ã¾í»ý²ã
+	// ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	float out_c2[64][9];
 	for (int i = 0;i < 64;i++)
 	{
@@ -39,21 +38,21 @@ int cnn(int64_t input_data)
 			float knl[9];
 			for (int k = 0;k < 9;k++)
 				knl[k] = w_conv2[(i * 32 + j) * 9 + k];
-			conv(out_c1[j], tmp, knl, 5, 3, 3);	// ¾í»ý
+			conv(out_c1[j], tmp, knl, 5, 3, 3);	// ï¿½ï¿½ï¿½ï¿½
 			for (int h = 0;h < 9;h++)
 				out_c2[i][h] += tmp[h];
 		}
 		for (int h = 0;h < 9;h++)
 		{
-			out_c2[i][h] += b_conv2[i];			// ¼ÓÉÏÆ«ÖÃ
+			out_c2[i][h] += b_conv2[i];			// ï¿½ï¿½ï¿½ï¿½Æ«ï¿½ï¿½
 			if (out_c2[i][h] < 0)
 				out_c2[i][h] = 0.0;				// ReLU
 		}
 	}
 
-	// µÚÈý²ãÈ«Á¬½Ó²ã
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½Ó²ï¿½
 	float in_d1[576];
-	// Conv2Êä³öµÄ64*9ÏòÁ¿ÐèÒª¸÷¾ØÕóÐý×ª180¡ãºó×÷ÎªDense1µÄÊäÈë
+	// Conv2ï¿½ï¿½ï¿½ï¿½ï¿½64*9ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ª180ï¿½ï¿½ï¿½ï¿½ï¿½ÎªDense1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	for (int c = 0; c < 64; c++)
 	{
 		for (int h = 0; h < 9; h++)
@@ -65,15 +64,15 @@ int cnn(int64_t input_data)
 	float out_d1[256];
 	mat_times(out_d1, w_dense1, in_d1, b_dense1, 576, 256);
 
-	// µÚËÄ²ãÈ«Á¬½Ó²ã
+	// ï¿½ï¿½ï¿½Ä²ï¿½È«ï¿½ï¿½ï¿½Ó²ï¿½
 	float out_d2[256];
 	mat_times(out_d2, w_dense2, out_d1, b_dense2, 256, 256);
 
-	// µÚÎå²ãÈ«Á¬½Ó²ã
+	// ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½Ó²ï¿½
 	float out_d3[10];
 	mat_times(out_d3, w_dense3, out_d2, b_dense3, 256, 10);
 
-	// ÅÐ¶Ï½á¹û
+	// ï¿½Ð¶Ï½ï¿½ï¿½
 	float max_prob = 0.0;
 	int max_class;
 	for (int i = 0;i < 10;i++)
@@ -88,7 +87,7 @@ int cnn(int64_t input_data)
 	return max_class;
 }
 
-// ¾í»ý²Ù×÷
+// HERE: Convolution function needs to be optimized.
 int conv(const float * input, float * output, const float * kennel, int i_size, int o_size, int k_size)
 {
 	if (i_size + 1 != o_size + k_size)
@@ -107,7 +106,7 @@ int conv(const float * input, float * output, const float * kennel, int i_size, 
 	return 0;
 }
 
-// ¾ØÕó³Ë·¨y=Ax+b
+// ï¿½ï¿½ï¿½ï¿½Ë·ï¿½y=Ax+b
 void mat_times(float * y, const float * A, const float * x, const float * b, int m, int n)
 {
 	for (int i = 0;i < n;i++)
@@ -115,9 +114,9 @@ void mat_times(float * y, const float * A, const float * x, const float * b, int
 		y[i] = 0;
 		for (int j = 0;j < m;j++)
 		{
-			y[i] += A[i*m + j] * x[j];	// ³ËÉÏÈ¨ÖØ
+			y[i] += A[i*m + j] * x[j];	// ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½
 		}
-		y[i] += b[i];					// ¼ÓÉÏÆ«ÖÃ
+		y[i] += b[i];					// ï¿½ï¿½ï¿½ï¿½Æ«ï¿½ï¿½
 		if (y[i] < 0)
 			y[i] = 0.0;					// ReLU
 	}

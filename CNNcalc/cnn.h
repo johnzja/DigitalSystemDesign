@@ -1,14 +1,14 @@
 #pragma once
-#include "pch.h"
+
 #include "typedefs.h"
 #include "model_conv.h"
 #include "model_dense.h"
 
-// ¾í»ýÉñ¾­ÍøÂçÊ¶±ðº¯Êý
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ï¿½ï¿½ï¿½
 int cnn(int64_t input_data);
 
-// ¾í»ý²Ù×÷
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 int conv(const float * input, float * output, const float * kennel, int i_size, int o_size, int k_size);
 
-// ¾ØÕó³Ë·¨
+// ï¿½ï¿½ï¿½ï¿½Ë·ï¿½
 void mat_times(float * y, const float * A, const float * x, const float * b, int m, int n);

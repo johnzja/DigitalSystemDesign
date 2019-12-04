@@ -1,7 +1,6 @@
 #ifndef MODEL_DENSE_H
 #define MODEL_DENSE_H
 
-#include "pch.h"
 // #include "ap_fixed.h"
 
 const float w_dense1[147456] = { 

@@ -6,7 +6,6 @@
 #ifndef TYPEDEFS_H
 #define TYPEDEFS_H
 
-#include "pch.h"
 #include <stdint.h>
 
 #endif

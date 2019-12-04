@@ -1,8 +1,6 @@
 #ifndef MODEL_CONV_H
 #define MODEL_CONV_H
 
-#include "pch.h"
-// #include "ap_fixed.h"
 #include "typedefs.h"
 
 const int K = 3;
